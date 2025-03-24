@@ -85,10 +85,11 @@ graph TD
   H --> I[LLM Chain: Generate blog post]
   I --> J[Combine results]
   J --> K[Return response to UI]
+```
 
 ## 4. Additional Features for the AI Research Assistant
 
-- **Interactive Q&A on Retrieved Articles::**
+- **Interactive Q&A on Retrieved Articles:**
   Enable users to ask questions about the fetched articles. Implement vector-based semantic search on the scraped article content (titles, abstracts, or full text) by embedding the data and storing it in a vector database.
 
 - **Search News Articles:**

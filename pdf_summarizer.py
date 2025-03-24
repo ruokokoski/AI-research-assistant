@@ -44,10 +44,10 @@ def process_folder(folder_path):
 def summarize_pdf(file_path):
     encoding = tiktoken.get_encoding("cl100k_base")
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=6000,
-        chunk_overlap=300,
+        chunk_size=8000,
+        chunk_overlap=400,
         length_function=lambda text: len(encoding.encode(text)),
-        separators=["\n\n", "\n", " ", ""]
+        separators=["\n\n", "\n"]
     )
     
     loader = PyMuPDFLoader(file_path)

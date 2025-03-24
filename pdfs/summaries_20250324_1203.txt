@@ -1,0 +1,35 @@
+Title: Attention is All you Need
+Authors: Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, Illia Polosukhin
+Source: 7181-attention-is-all-you-need.pdf
+Summary:
+The paper "Attention Is All You Need" introduces the **Transformer**, a neural network architecture that relies entirely on **self-attention mechanisms** for sequence transduction tasks like machine translation, eliminating the need for recurrence or convolutions. The Transformer's key innovations include **scaled dot-product attention**, **multi-head attention**, and **positional encodings**, enabling efficient parallelization, reduced training time, and improved performance. Achieving state-of-the-art BLEU scores of 28.4 (English-to-German) and 41.0 (English-to-French), it surpasses previous models at a fraction of the training cost. The encoder-decoder architecture, with stacked self-attention and feed-forward layers, allows for capturing long-range dependencies and interpretable syntactic/semantic structures. The Transformer's efficiency, scalability, and performance mark a paradigm shift in sequence modeling, with applications extending beyond text-based tasks.
+
+================================================================================
+Title: -
+Authors: -
+Source: glorot2011 - relu.pdf
+Summary:
+The paper "Deep Sparse Rectifier Neural Networks" by Glorot, Bordes, and Bengio investigates the advantages of using rectified linear units (ReLUs) as activation functions in deep neural networks. ReLUs, defined as \( \text{max}(0, x) \), promote sparsity, are biologically plausible, and computationally efficient, outperforming traditional sigmoid and hyperbolic tangent functions. The authors demonstrate that deep rectifier networks achieve high performance without unsupervised pre-training, bridging the gap between machine learning and neuroscience. Empirical results on image classification (MNIST, CIFAR10, NISTP, NORB) and sentiment analysis tasks show that rectifiers enable efficient gradient propagation, avoid vanishing gradients, and maintain high sparsity (68-83%) without significant performance loss. Rectifier networks are particularly effective for sparse data, excelling in sentiment analysis with competitive accuracy. The study highlights the importance of activation function choice, sparsity, and the reduced need for pre-training in deep learning, making rectifier networks a versatile and efficient approach for various tasks.
+
+================================================================================
+Title: -
+Authors: -
+Source: Ba2016 - Layer Normalization.pdf
+Summary:
+The paper introduces **Layer Normalization (LN)**, a technique to accelerate deep neural network training by normalizing neuron activities within a layer, independent of batch size. Unlike **Batch Normalization (BN)**, which relies on mini-batch statistics, LN computes mean and variance across all neurons in a layer for a single training case. This makes LN particularly effective for **recurrent neural networks (RNNs)**, online learning, and tasks with small or variable batch sizes. LN stabilizes hidden states in RNNs, mitigates covariate shift, and performs consistently during training and testing. Empirical results show LN reduces training time, improves convergence, and enhances performance across tasks like image-sentence retrieval, sequence generation, and sentiment analysis. It is robust to weight and data transformations, offering a simpler and more versatile alternative to BN. LN also demonstrates advantages in long sequences, small mini-batches, and RNN architectures, though BN remains superior in convolutional networks due to boundary effects. LN’s invariance properties and implicit learning rate stabilization further contribute to its efficacy in deep learning models.
+
+================================================================================
+Title: -
+Authors: -
+Source: Garza2023-TimeGPT.pdf
+Summary:
+TimeGPT, developed by Nixtla, is the first foundation model for time series forecasting, leveraging a Transformer-based architecture to generate accurate predictions across diverse datasets without additional training (zero-shot inference). Trained on a massive dataset of over 100 billion data points from domains like finance, healthcare, and IoT, it excels in capturing complex temporal patterns and generalizing across varied frequencies, seasonality, and noise. TimeGPT outperforms traditional statistical, machine learning, and deep learning models in benchmarks, offering simplicity, speed, and scalability while supporting probabilistic forecasting and fine-tuning. Its global model approach democratizes advanced forecasting capabilities, though challenges like dataset size and computational constraints remain. Future research focuses on informed forecasting, time series embedding, and multimodal integration to further enhance the field.
+
+================================================================================
+Title: Transformer-mallit
+Authors: Teemu Ruokokoski
+Source: Ruokokoski_Teemu_Transformer_mallit_ja_niiden_soveltaminen_aikasarjojen_analyysiin.pdf
+Summary:
+Teemu Ruokokoski’s 2024 bachelor’s thesis at the University of Helsinki evaluates the application of Transformer models in time series analysis, highlighting their parallel processing and attention mechanisms. While Transformers outperform traditional models like RNNs and LSTMs in handling long-term dependencies, they face challenges such as computational complexity, distribution shifts, and scalability. The thesis reviews advanced models like LogSparse, Informer, and PatchTST, as well as emerging large language models (e.g., GPT4TS, TimeGPT). Despite their potential, simpler models like DLinear can outperform Transformers in certain scenarios, particularly with limited data. The research underscores the need for further exploration to address data complexity, scalability, and generalization, emphasizing tailored approaches based on specific time series characteristics.
+
+================================================================================
