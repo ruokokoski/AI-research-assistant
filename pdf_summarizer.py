@@ -3,11 +3,13 @@ warnings.filterwarnings("ignore", message="Unexpected type for token usage")
 
 import os
 import time
+import tiktoken
 from datetime import datetime
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import PyMuPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 load_dotenv()
 
@@ -40,14 +42,25 @@ def process_folder(folder_path):
     return summaries
 
 def summarize_pdf(file_path):
+    encoding = tiktoken.get_encoding("cl100k_base")
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=6000,
+        chunk_overlap=300,
+        length_function=lambda text: len(encoding.encode(text)),
+        separators=["\n\n", "\n", " ", ""]
+    )
+    
     loader = PyMuPDFLoader(file_path)
-    docs = loader.load_and_split()
+    
+    docs = loader.load()
     metadata = docs[0].metadata
     authors = metadata.get("author") or "-"
     title = metadata.get("title") or "-"
 
+    split_docs = text_splitter.split_documents(docs)
+
     chain = load_summarize_chain(llm, chain_type="map_reduce")
-    summary = chain.invoke(docs)
+    summary = chain.invoke(split_docs)
 
     return authors, title, summary
 
@@ -79,7 +92,7 @@ def save_summaries(summaries, folder_path):
     
     print(f"\nSaved {len(summaries)} summaries to {output_file}")
 
-def print_summaries():
+def print_statistics(summaries, folder_path):
     pdf_files = [f for f in os.listdir(folder_path) if f.lower().endswith('.pdf')]
     print("\nSummary statistics:")
     print(f"- Total PDFs found: {len(pdf_files)}")
@@ -89,7 +102,7 @@ def print_summaries():
 if __name__ == "__main__":
     llm = ChatOpenAI(
         openai_api_key=os.getenv("OPENROUTER_API_KEY"),
-        model="deepseek/deepseek-chat",
+        model="deepseek/deepseek-chat:free",
         base_url="https://openrouter.ai/api/v1",
         default_headers={
             "HTTP-Referrer": "http://localhost:3000",
@@ -104,7 +117,7 @@ if __name__ == "__main__":
     if summaries:
         print_summaries(summaries)
         save_summaries(summaries, folder_path)
-        print_summaries()
+        print_statistics(summaries, folder_path)
     else:
         print("No valid PDFs processed.")
     

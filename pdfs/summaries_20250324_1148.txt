@@ -1,0 +1,37 @@
+Title: Attention is All you Need
+Authors: Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, Illia Polosukhin
+Source: 7181-attention-is-all-you-need.pdf
+Summary:
+The paper "Attention Is All You Need" introduces the Transformer, a novel neural network architecture that relies solely on self-attention mechanisms for sequence transduction tasks like machine translation, eliminating the need for recurrence or convolutions. The Transformer outperforms traditional models in translation quality, parallelizability, and training efficiency, achieving state-of-the-art BLEU scores on WMT 2014 English-to-German (28.4) and English-to-French (41.0) tasks with significantly lower computational costs. Key innovations include scaled dot-product attention, multi-head attention, and positional encodings to capture global dependencies and sequential order. The model's encoder-decoder structure, composed of stacked self-attention and feed-forward layers, enables efficient parallelization and handles long-range dependencies effectively. The Transformer's success is attributed to its ability to reduce training time and complexity while surpassing existing models, paving the way for advancements in non-text modalities and large-scale sequence processing.
+
+================================================================================
+Title: -
+Authors: -
+Source: glorot2011 - relu.pdf
+Summary:
+The paper by Glorot, Bordes, and Bengio investigates the effectiveness of rectifier activation functions (e.g., ReLU) in deep neural networks, demonstrating their superiority over traditional functions like sigmoid and tanh. Rectifiers promote sparse representations, enhance computational efficiency, and align with biological neuron behavior, making them biologically plausible. They enable successful training of deep networks without unsupervised pre-training, though pre-training remains useful in semi-supervised scenarios. Experiments on image classification (MNIST, CIFAR10, NISTP, NORB) and sentiment analysis tasks show that rectifier networks achieve competitive or better performance compared to tanh and softplus activations. The study highlights the benefits of sparsity, regularization, and the choice of activation functions, bridging insights from computational neuroscience and machine learning while advancing the understanding of deep network optimization.
+
+================================================================================
+Title: -
+Authors: -
+Source: Ba2016 - Layer Normalization.pdf
+Summary:
+Layer normalization (LN), introduced by Ba, Kiros, and Hinton, is a technique to accelerate deep neural network training by normalizing neuron activities within layers, independent of batch size. Unlike batch normalization (BN), which relies on mini-batch statistics, LN computes mean and variance across all summed inputs within a layer for a single training case, making it suitable for recurrent neural networks (RNNs) and online learning. LN stabilizes hidden state dynamics, addresses covariate shift, and simplifies training and testing computations by performing the same operations in both phases. 
+
+Empirical results show LN reduces training time and improves performance across various tasks, including natural language processing, image retrieval, and handwriting generation. It outperforms BN in RNNs due to its batch size independence and robustness to varying sequence lengths. LN also demonstrates invariance to weight and data scaling, implicitly stabilizes learning by reducing the effective learning rate, and enhances convergence in models like LSTMs and GRUs. Its application in tasks like skip-thought vectors and DRAW models further validates its effectiveness in improving training efficiency, generalization, and task performance. Overall, LN is a versatile and robust normalization method, particularly beneficial for RNNs and tasks with small batch sizes or online learning scenarios.
+
+================================================================================
+Title: -
+Authors: -
+Source: Garza2023-TimeGPT.pdf
+Summary:
+**TimeGPT** is introduced as the first foundation model for time series forecasting, capable of generating accurate zero-shot predictions across diverse datasets without additional training. Built on a Transformer architecture, TimeGPT leverages transfer learning, trained on a massive dataset of over 100 billion data points across domains like finance, healthcare, and IoT. It outperforms traditional statistical, machine learning, and deep learning models in terms of accuracy, efficiency, and simplicity, as measured by metrics like rMAE and rRMSE. TimeGPT's zero-shot capabilities, probabilistic forecasting, and scalability democratize access to advanced forecasting, reducing computational complexity and implementation barriers. While fine-tuning can enhance task-specific performance, the model's global approach and speed (0.6 milliseconds per series) make it a practical solution for diverse applications. Challenges remain in standardization and evaluation, but TimeGPT marks a significant step forward in time series forecasting, with potential to inspire future research in informed forecasting, time series embeddings, and multimodal models.
+
+================================================================================
+Title: Transformer-mallit
+Authors: Teemu Ruokokoski
+Source: Ruokokoski_Teemu_Transformer_mallit_ja_niiden_soveltaminen_aikasarjojen_analyysiin.pdf
+Summary:
+Teemu Ruokokoski's 2024 bachelor's thesis at the University of Helsinki investigates the use of Transformer models in time series analysis, supervised by Dr. P. Mikkola and Assoc. Prof. A. Klami. The 24-page study highlights the Transformer's attention mechanism for modeling long-term dependencies and its potential in fields like economics, healthcare, and weather forecasting. While Transformers outperform traditional neural networks, challenges such as computational costs, overfitting, and handling trends and seasonality remain. Key models like **Informer**, **Autoformer**, and **PatchTST** aim to improve efficiency through techniques like sparse attention and patching. Transfer learning from models like **GPT4TS** and **TimeGPT** shows promise for cross-domain generalization. The thesis concludes that while Transformers are promising, further research is needed to fully optimize their application in time series forecasting.
+
+================================================================================
