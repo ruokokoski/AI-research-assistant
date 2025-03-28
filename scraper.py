@@ -1,9 +1,31 @@
+import os
 import asyncio
 import sys
 import re
+import requests
+import fitz
+from io import BytesIO
 from urllib.parse import quote_plus
 from playwright.async_api import async_playwright
 from playwright_stealth import stealth_async
+from langchain_openai import ChatOpenAI
+from langchain.chains.summarize import load_summarize_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.schema import Document
+import tiktoken
+from dotenv import load_dotenv
+
+load_dotenv()
+
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+    model="deepseek/deepseek-chat:free",
+    base_url="https://openrouter.ai/api/v1",
+    default_headers={
+        "HTTP-Referer": "http://localhost:3000",
+        "X-Title": "AI Research Assistant"
+    }
+)
 
 async def extract_article_data(page):
     articles = []
@@ -40,6 +62,34 @@ async def extract_article_data(page):
     
     return articles
 
+def summarize_pdf_from_url(pdf_url):
+    response = requests.get(pdf_url)
+    response.raise_for_status()
+    
+    pdf_data = BytesIO(response.content)
+    doc = fitz.open(stream=pdf_data, filetype="pdf")
+    
+    text = ""
+    metadata = doc.metadata
+    for page in doc:
+        text += page.get_text()
+        if not metadata:
+            metadata.update(page.metadata)
+    
+    encoding = tiktoken.get_encoding("cl100k_base")
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=8000,
+        chunk_overlap=400,
+        length_function=lambda text: len(encoding.encode(text)),
+        separators=["\n\n", "\n"]
+    )
+    
+    docs = [Document(page_content=text, metadata=metadata)]
+    split_docs = text_splitter.split_documents(docs)
+    
+    chain = load_summarize_chain(llm, chain_type="map_reduce")
+    return chain.invoke(split_docs)['output_text']
+
 async def run(search_query):
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -62,6 +112,24 @@ async def run(search_query):
             print(f"Authors: {', '.join(article['authors'])}")
             print(f"Year: {article['year']}")
             print(f"PDF: {article['pdf_url']}")
+
+        if articles:
+            first_article = articles[0]
+            if first_article['pdf_url'] != "No PDF available":
+                try:
+                    print(f"\n📄 Processing PDF: {first_article['pdf_url']}")
+                    summary = summarize_pdf_from_url(first_article['pdf_url'])
+                    print(f"Title: {first_article['title']}")
+                    print(f"Year: {first_article['year']}")
+                    print(f"Author(s): {', '.join(article['authors'])}")
+                    print("\n🔍 Summary:")
+                    print(summary)
+                except Exception as e:
+                    print(f"\n❌ Error during summarization: {str(e)}")
+            else:
+                print("\n⚠️ First article has no PDF available")
+        else:
+            print("\n🔎 No articles found for this search query")
 
         await browser.close()
 
