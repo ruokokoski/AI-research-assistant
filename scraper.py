@@ -113,24 +113,51 @@ async def run(search_query):
             print(f"Year: {article['year']}")
             print(f"PDF: {article['pdf_url']}")
 
-        if articles:
-            first_article = articles[0]
-            if first_article['pdf_url'] != "No PDF available":
-                try:
-                    print(f"\n📄 Processing PDF: {first_article['pdf_url']}")
-                    summary = summarize_pdf_from_url(first_article['pdf_url'])
-                    print(f"Title: {first_article['title']}")
-                    print(f"Year: {first_article['year']}")
-                    print(f"Author(s): {', '.join(article['authors'])}")
-                    print("\n🔍 Summary:")
-                    print(summary)
-                except Exception as e:
-                    print(f"\n❌ Error during summarization: {str(e)}")
-            else:
-                print("\n⚠️ First article has no PDF available")
-        else:
+        if not articles:
             print("\n🔎 No articles found for this search query")
+            await browser.close()
+            return
 
+        while True:
+            choice = input("\nSummarize articles? (y/n): ").strip().lower()
+            if choice in ['y', 'n']:
+                break
+            print("Invalid input. Please enter 'y' or 'n'")
+        
+        if choice == 'n':
+            await browser.close()
+            return
+
+        max_articles = min(len(articles), 25)
+        while True:
+            try:
+                num = int(input(f"How many articles to summarize? (1-{max_articles}): "))
+                if 1 <= num <= max_articles:
+                    break
+                print(f"Please enter a number between 1 and {max_articles}")
+            except ValueError:
+                print("Invalid input. Please enter a number")
+
+        successful = 0
+        for i in range(num):
+            article = articles[i]
+            if article['pdf_url'] == "No PDF available":
+                print(f"\n⚠️ Article {i+1} has no PDF available")
+                continue
+            
+            try:
+                print(f"\n📄 Processing PDF {i+1}/{num}: {article['pdf_url']}")
+                summary = summarize_pdf_from_url(article['pdf_url'])
+                print(f"\nTitle: {article['title']}")
+                print(f"Year: {article['year']}")
+                print(f"Authors: {', '.join(article['authors'])}")
+                print(f"\nSummary:\n{summary}")
+                print("-" * 80)
+                successful += 1
+            except Exception as e:
+                print(f"\n❌ Error processing article {i+1}: {str(e)}")
+
+        print(f"\n✅ Successfully summarized {successful}/{num} articles")
         await browser.close()
 
 if __name__ == "__main__":
