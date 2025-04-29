@@ -5,9 +5,55 @@ Home
 {% endblock %}
 
 {% block body %}
+<div class="container mt-4">
+  <div id="loading_message" class="alert alert-info" style="display:none;">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Searching...
+  </div>
 
-<div class="container-fluid"></div>
-    test
+  <label for="search_field">ArXiv search:</label>
+  <form method="POST" action="/search" id="search_form">
+    <div class="d-flex mt-1 mb-4">
+      <input
+        type="text"
+        id="search_field"
+        class="form-control mr-2"
+        placeholder="Search articles..."
+        name="query"
+        style="max-width: 70%;"
+      />
+      <button class="btn btn-primary" type="submit" id="search_button">Search</button>
+    </div>
+  </form>
+
+  {% if results %}
+    <h5 class="mb-3">Found {{ results|length }} articles:</h5>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Author(s)</th>
+          <th>Year</th>
+          <th>Title</th>
+          <th>PDF</th>
+        </tr>
+      </thead>
+      <tbody id="result_table">
+        {% for result in results %}
+          <tr>
+            <td>{{ result.authors | join(', ') }}</td>
+            <td>{{ result.year }}</td>
+            <td><a href="{{ result.doi_link }}" target="_blank">{{ result.title }}</a></td>
+            <td>
+              {% if result.pdf_url != "No PDF available" %}
+                <a href="{{ result.pdf_url }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+              {% else %}
+                <button class="btn btn-secondary btn-sm" disabled>PDF</button>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
 </div>
-
 {% endblock %}
