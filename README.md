@@ -1,15 +1,39 @@
 # AI-research-assistant
 
+Flask app for scraping research articles, summarizing them with LLMs, and auto-generating blog posts.  
+The main goal of this project is to build a web-based AI research assistant powered by LLMs.  
+The scripts `pdf_summarizer.py` and `scraper.py` are initial tests and tools for exploring the backend functionality.
+
+## Documents
+- [Project plan](./docs/AI_Research_Assistant.md)
+
+---
+
+## 🚀 Flask App
+
+The main application is a Flask app located in `src/`. To start it:
+
+1. Activate the Poetry environment:
+```bash
+poetry shell
+```
+
+2. Run:
+```bash
+python3 src/index.py
+```
+
+This will start the app on:
+http://localhost:5001
+
 ## Setup
 
 This project uses [Poetry](https://python-poetry.org/) for dependency management and virtual environments.
 
-### Install dependencies
-
-Make sure Poetry is installed:
+Make sure Poetry is installed. If not, install by running (Linux or macOS):
 
 ```bash
-pip install poetry
+curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.local python3 -
 ```
 
 Then install all project dependencies:
@@ -26,9 +50,6 @@ Set your OpenRouter API key in a `.env` file:
 ```bash
 OPENROUTER_API_KEY=your_api_key_here
 ```
-
-## Documents
-- [Project plan](./docs/AI_Research_Assistant.md)
 
 ## Usage: `pdf_summarizer.py`
 
