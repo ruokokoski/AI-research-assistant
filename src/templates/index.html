@@ -32,7 +32,7 @@ Home
             </form>
 
             {% if results %}
-            <form method="POST" action="/process-marked">
+            <form method="POST" action="/process-marked" id="process_form">
                 <h5 class="mb-3">Found {{ results|length }} articles:</h5>
                 <table class="table table-bordered table-sm">
                     <thead>
@@ -41,7 +41,7 @@ Home
                         <th>Author(s)</th>
                         <th>Year</th>
                         <th>Title</th>
-                        <th>PDF</th>
+                        <th></th>
                         </tr>
                     </thead>
                 <tbody id="result_table">
@@ -76,21 +76,36 @@ Home
     <!-- Right Column - Output -->
     <div class="col-md-6 pl-2">
         <div class="output-container shadow-sm" style="height: 90vh; overflow-y: auto; padding: 20px; border: 2px solid #e3e6f0; border-radius: 8px;">
-          {% if summarized_content %}
-            <h4>Summary</h4>
-            <div class="summary-content">
-              {{ summarized_content|safe }}
+            <div id="loading_summary" class="alert alert-info" style="display:none;">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Summarizing selected articles...
             </div>
-          {% elif blog_content %}
-            <h4>Blog Post</h4>
-            <div class="blog-content">
-              {{ blog_content|safe }}
-            </div>
-          {% else %}
-            <div class="text-muted" style="height: 100%; display: flex;  justify-content: center;">
-              Select articles and click either button to view results here
-            </div>
-          {% endif %}
+            {% if summarized_content %}
+                <h5>Summarized articles</h5>
+                <div class="summary-content">
+                    {% for summary in summarized_content %}
+                    <div class="article-summary mb-4 p-3" style="border: 1px solid #dee2e6; border-radius: 5px;">
+                        <h6>{{ summary.title }}</h6>
+                        <div class="meta mb-2">
+                            <span class="text-muted authors">{{ summary.authors }}</span>
+                            <span class="text-muted year">({{ summary.year }})</span>
+                        </div>
+                        <div class="summary-text">
+                            {{ summary.content|safe }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% elif blog_content %}
+                <h4>Blog Post</h4>
+                <div class="blog-content">
+                {{ blog_content|safe }}
+                </div>
+            {% else %}
+                <div class="text-muted" style="height: 100%; display: flex;  justify-content: center;">
+                Select articles and click either button to view results here
+                </div>
+            {% endif %}
         </div>
     </div>
 

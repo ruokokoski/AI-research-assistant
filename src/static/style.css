@@ -39,13 +39,13 @@
 
 /* Action Buttons (Summarize/Blog) */
 .btn-info {
-    background: linear-gradient(145deg, #17a2b8, #2dc997);
+    background: linear-gradient(145deg, #13b3cb, #3edaa8);
     border-radius: 10px;
     padding: 10px 25px;
 }
 
 .btn-success {
-    background: linear-gradient(145deg, #28a745, #3dd28a);
+    background: linear-gradient(145deg, #21c046, #4ee39b);
     border-radius: 8px;
     padding: 10px 25px;
 }
@@ -130,4 +130,26 @@
 .btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.8rem;
+}
+
+.article-summary {
+    background-color: #f8f9fa;
+    transition: transform 0.2s;
+}
+
+.article-summary:hover {
+    transform: translateY(-2px);
+}
+
+.meta .authors {
+    font-style: italic;
+}
+
+.meta .year {
+    font-weight: 500;
+}
+
+.summary-text {
+    line-height: 1.6;
+    text-align: justify;
 }
