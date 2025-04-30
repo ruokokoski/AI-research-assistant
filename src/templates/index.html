@@ -82,6 +82,11 @@ Home
             </div>
             {% if summarized_content %}
                 <h5>Summarized articles</h5>
+                <form method="POST" action="/save-summaries">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-save"></i> Save Summaries
+                    </button>
+                </form>
                 <div class="summary-content">
                     {% for summary in summarized_content %}
                     <div class="article-summary mb-4 p-3" style="border: 1px solid #dee2e6; border-radius: 5px;">

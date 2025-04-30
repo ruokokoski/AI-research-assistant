@@ -1,9 +1,10 @@
 import asyncio
 from os import getenv
-from flask import Flask, render_template,  redirect, request, flash, session
+from flask import Flask, render_template,  redirect, request, flash, session, send_file
 from services.arxiv_service import search_arxiv
-from services.summarizer import summarize_pdf_from_url
+from services.summarizer import summarize_pdf_from_url, save_summaries
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -63,8 +64,10 @@ def process_marked():
                     "title": article['title'],
                     "authors": ", ".join(article['authors']),
                     "year": article['year'],
+                    "pdf_url": article['pdf_url'],
                     "content": summary
                 })
+            session['summarized_content'] = summaries
                 
             return render_template("index.html",
                                 results=search_results,
@@ -76,4 +79,27 @@ def process_marked():
             
     except Exception as e:
         flash(f"Error processing articles: {str(e)}", "danger")
+        return redirect("/")
+
+@app.route("/save-summaries", methods=["POST"])
+def save_summaries():
+    if 'summarized_content' not in session:
+        flash("No summaries available to save", "warning")
+        return redirect("/")
+    
+    try:
+        summaries = session['summarized_content']
+        output = save_summaries(summaries)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+        filename = f"summaries_{timestamp}.txt"
+        
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='text/plain'
+        )
+    except Exception as e:
+        flash(f"Failed to save summaries: {str(e)}", "danger")
         return redirect("/")

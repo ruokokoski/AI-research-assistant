@@ -8,6 +8,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import tiktoken
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -48,3 +49,22 @@ def summarize_pdf_from_url(pdf_url):
     
     chain = load_summarize_chain(llm, chain_type="map_reduce")
     return chain.invoke(split_docs)['output_text']
+
+def save_summaries(summaries):
+    output = BytesIO()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    output.write(f"Research Summaries ({timestamp})\n".encode('utf-8'))
+    output.write("="*50 + b"\n\n")
+    
+    for summary in summaries:
+        output.write(f"Title: {summary['title']}\n".encode('utf-8'))
+        output.write(f"Authors: {summary['authors']}\n".encode('utf-8'))
+        output.write(f"Year: {summary['year']}\n".encode('utf-8'))
+        output.write(f"PDF URL: {summary['pdf_url']}\n".encode('utf-8'))
+        output.write("\nSummary:\n".encode('utf-8'))
+        output.write(f"{summary['content']}\n".encode('utf-8'))
+        output.write("\n" + "="*50 + "\n\n".encode('utf-8'))
+    
+    output.seek(0)
+    return output
