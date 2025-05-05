@@ -59,7 +59,7 @@ def process_marked():
     try:
         if action == "summarize":
             summaries = []
-            all_keywords = []
+            #all_keywords = []
             for url in valid_urls:
                 article = article_map.get(url)
                 if not article:
@@ -74,8 +74,8 @@ def process_marked():
                     "content": summary['summary'],
                     "keywords": summary['keywords']
                 })
-                all_keywords.extend(summary['keywords'])
-            top_keywords = [kw for kw, _ in Counter(all_keywords).most_common(5)]
+                #all_keywords.extend(summary['keywords'])
+            #top_keywords = [kw for kw, _ in Counter(all_keywords).most_common(5)]
             summary_id = str(uuid4())
             SUMMARY_STORE[summary_id] = summaries
             session['summary_id'] = summary_id
@@ -83,7 +83,8 @@ def process_marked():
             return render_template("index.html",
                                 results=search_results,
                                 summarized_content=summaries,
-                                top_keywords=top_keywords)
+                                #top_keywords=top_keywords
+                                )
             
         elif action == "blog":
             # Implement blog post generation logic here

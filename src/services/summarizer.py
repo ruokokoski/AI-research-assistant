@@ -6,13 +6,10 @@ from langchain_openai import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
+from langchain.prompts import PromptTemplate
 import tiktoken
 from dotenv import load_dotenv
 from datetime import datetime
-
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-#from collections import Counter
 
 load_dotenv()
 
@@ -73,10 +70,10 @@ def extract_keywords(text):
         template=keyword_template,
         input_variables=["text"]
     )
-    keyword_chain = LLMChain(llm=llm, prompt=keyword_prompt)
-    keywords_str = keyword_chain.run(text)
-    
-    return [kw.strip().lower() for kw in keywords_str.split(",") if kw.strip()]
+    chain = keyword_prompt | llm
+    result = chain.invoke({"text": text})
+
+    return [kw.strip().lower() for kw in result.content.split(",") if kw.strip()]
 
 def save_summaries(summaries):
     output = BytesIO()
