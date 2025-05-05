@@ -87,6 +87,18 @@ Home
                         <i class="bi bi-save"></i> Save Summaries
                     </button>
                 </form>
+
+                {% if top_keywords %}
+                <div class="top-keywords mb-4 p-3" style="background-color: #f8f9fa; border-radius: 5px;">
+                    <strong>Top Keywords Across Articles:</strong>
+                    <div class="keyword-badges mt-2">
+                        {% for keyword in top_keywords %}
+                        <span class="badge bg-primary-subtle text-primary me-1">{{ keyword }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
                 <div class="summary-content">
                     {% for summary in summarized_content %}
                     <div class="article-summary mb-4 p-3" style="border: 1px solid #dee2e6; border-radius: 5px;">
@@ -94,6 +106,12 @@ Home
                         <div class="meta mb-2">
                             <span class="text-muted authors">{{ summary.authors }}</span>
                             <span class="text-muted year">({{ summary.year }})</span>
+                        </div>
+                        <div class="keywords mb-2">
+                            <small>Keywords:</small>
+                            {% for keyword in summary.keywords %}
+                            <span class="badge bg-secondary-subtle text-secondary me-1">{{ keyword }}</span>
+                            {% endfor %}
                         </div>
                         <div class="summary-text">
                             {{ summary.content|safe }}

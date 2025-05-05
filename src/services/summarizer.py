@@ -10,6 +10,10 @@ import tiktoken
 from dotenv import load_dotenv
 from datetime import datetime
 
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+#from collections import Counter
+
 load_dotenv()
 
 llm = ChatOpenAI(
@@ -46,9 +50,33 @@ def summarize_pdf_from_url(pdf_url):
     
     docs = [Document(page_content=text, metadata=metadata)]
     split_docs = text_splitter.split_documents(docs)
+
+    summary_chain = load_summarize_chain(llm, chain_type="map_reduce")
+    summary = summary_chain.invoke(split_docs)['output_text']
+    doc_keywords = extract_keywords(summary)
+
+    return {
+        'summary': summary,
+        'keywords': doc_keywords
+    }
+
+def extract_keywords(text):
+    keyword_template = """Extract the 3-5 most important technical keywords from the text below. 
+    Return ONLY a comma-separated list of keywords, nothing else.
+    Avoid common words. Use lowercase for all keywords.
+
+    TEXT: {text}
+
+    KEYWORDS:"""
     
-    chain = load_summarize_chain(llm, chain_type="map_reduce")
-    return chain.invoke(split_docs)['output_text']
+    keyword_prompt = PromptTemplate(
+        template=keyword_template,
+        input_variables=["text"]
+    )
+    keyword_chain = LLMChain(llm=llm, prompt=keyword_prompt)
+    keywords_str = keyword_chain.run(text)
+    
+    return [kw.strip().lower() for kw in keywords_str.split(",") if kw.strip()]
 
 def save_summaries(summaries):
     output = BytesIO()
