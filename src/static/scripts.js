@@ -29,6 +29,12 @@ window.addEventListener("load", () => {
   });
 
   processForm.addEventListener("submit", event => {
+    const selected = processForm.querySelectorAll("input[name='selected_articles']:checked");
+
+    if (selected.length === 0) {
+      return;
+    }
+    
     if (clickedButton && clickedButton.value === "summarize") {
       const confirmed = confirm("Are you sure you want to summarize the selected articles?");
       if (!confirmed) {

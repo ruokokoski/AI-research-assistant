@@ -86,11 +86,12 @@ def extract_keywords(text):
 
     return [kw.strip().lower() for kw in result.content.split(",") if kw.strip()]
 
-def save_summaries(summaries):
+def save_summaries(summaries, query):
     output = BytesIO()
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     output.write(f"Research Summaries ({timestamp})\n".encode('utf-8'))
+    output.write(f"Original search query: {query}\n".encode('utf-8'))
     line = f"\n{'='*80}\n\n"
     output.write(line.encode('utf-8'))
     

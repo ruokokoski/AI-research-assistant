@@ -5,9 +5,7 @@ from services.arxiv_service import search_arxiv
 from services.summarizer import summarize_pdf_from_url, save_summaries
 from dotenv import load_dotenv
 from datetime import datetime
-from collections import Counter
 from uuid import uuid4
-#from flask import g
 
 SUMMARY_STORE = {}
 
@@ -40,6 +38,7 @@ def search():
         return redirect("/")
 
     session['search_results'] = results
+    session['last_query'] = search_query
     return render_template("index.html", results=results)
 
 @app.route("/process-marked", methods=["POST"])
@@ -59,7 +58,6 @@ def process_marked():
     try:
         if action == "summarize":
             summaries = []
-            #all_keywords = []
             for url in valid_urls:
                 article = article_map.get(url)
                 if not article:
@@ -74,17 +72,14 @@ def process_marked():
                     "content": summary['summary'],
                     "keywords": summary['keywords']
                 })
-                #all_keywords.extend(summary['keywords'])
-            #top_keywords = [kw for kw, _ in Counter(all_keywords).most_common(5)]
+
             summary_id = str(uuid4())
             SUMMARY_STORE[summary_id] = summaries
             session['summary_id'] = summary_id
                 
             return render_template("index.html",
-                                results=search_results,
-                                summarized_content=summaries,
-                                #top_keywords=top_keywords
-                                )
+                                   results=search_results,
+                                   summarized_content=summaries)
             
         elif action == "blog":
             # Implement blog post generation logic here
@@ -103,7 +98,8 @@ def save_summaries_route():
     
     try:
         summaries = SUMMARY_STORE[summary_id]
-        output = save_summaries(summaries)
+        query = session.get('last_query', 'N/A')
+        output = save_summaries(summaries, query)
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M")
         filename = f"summaries_{timestamp}.txt"

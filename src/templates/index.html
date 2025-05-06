@@ -33,7 +33,11 @@ Home
 
             {% if results %}
             <form method="POST" action="/process-marked" id="process_form">
-                <h5 class="mb-3">Found {{ results|length }} articles:</h5>
+                <div class="mb-2">
+                    <button type="submit" name="action" value="summarize" class="btn btn-info mr-2">Summarize Articles</button>
+                    <button type="submit" name="action" value="blog" class="btn btn-success">Create Blog Post</button>
+                </div>
+                <h5 class="mb-2">Found {{ results|length }} articles:</h5>
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
@@ -64,10 +68,7 @@ Home
                     {% endfor %}
                 </tbody>
                 </table>
-                <div class="mt-3">
-                    <button type="submit" name="action" value="summarize" class="btn btn-info mr-2">Summarize Articles</button>
-                    <button type="submit" name="action" value="blog" class="btn btn-success">Create Blog Post</button>
-                </div>
+                
             </form>
             {% endif %}
         </div>
