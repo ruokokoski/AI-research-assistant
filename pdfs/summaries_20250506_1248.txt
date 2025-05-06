@@ -1,0 +1,26 @@
+Research Summaries (2025-05-06 12:48)
+
+================================================================================
+
+Title: Transformer Encoder and Multi-features Time2Vec for Financial Prediction
+Authors: Nguyen Kim Hai Bui, Nguyen Duy Chien, Péter Kovács, Gergő Bognár
+Year: 2025
+PDF URL: https://arxiv.org/pdf/2504.13801
+Keywords: multi-feature selection, time2vec, transformer encoder, tt2vfin
+
+Summary:
+This paper introduces a novel neural network architecture, **TT2VFin**, for financial prediction by integrating **Time2Vec** with a **Transformer Encoder** to capture both short-term fluctuations and long-term dependencies in stock prices. The model employs a **multi-feature selection method** based on cross-correlation analysis of related stocks, enhancing prediction accuracy by leveraging correlated market trends. TT2VFin outperforms traditional models like RNN and LSTM, as well as other encoding techniques, with fewer parameters. The study highlights the effectiveness of combining temporal encoding with multi-feature analysis for financial time series forecasting and suggests potential applications to other time series problems, emphasizing the importance of feature aggregation in improving model performance.
+
+================================================================================
+
+Title: Transformer Based Time-Series Forecasting for Stock
+Authors: Shuozhe Li, Zachery B Schulwol, Risto Miikkulainen
+Year: 2025
+PDF URL: https://arxiv.org/pdf/2502.09625
+Keywords: attention, probsparse, stockformer, time-series
+
+Summary:
+The paper "Transformer Based Time-Series Forecasting For Stock" introduces **Stockformer**, a Transformer-based model for stock price prediction, framing it as a multivariate time-series problem. Stockformer addresses limitations of traditional methods like RNNs and LSTMs by using **attention mechanisms** and **ProbSparse Attention** to efficiently capture long-term dependencies. Trained on hourly stock data, it outperforms LSTM in profitability but faces challenges in training stability and learning rate scheduling. Future work includes expanding ticker coverage, dynamic training, and temporal encoding techniques like Time2Vec. The paper highlights the potential of Transformers in financial forecasting while emphasizing the need for further refinement. Key references include foundational works on neural networks, attention mechanisms, and time-series analysis, showcasing the evolution of deep learning in financial applications.
+
+================================================================================
+

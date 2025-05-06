@@ -58,9 +58,9 @@ def summarize_pdf_from_url(pdf_url):
     }
 
 def extract_keywords(text):
-    keyword_template = """Extract the 3-5 most important technical keywords from the text below. 
+    keyword_template = """Extract the 4 most important technical keywords from the text below. 
     Return ONLY a comma-separated list of keywords, nothing else.
-    Avoid common words. Use lowercase for all keywords.
+    Avoid common words! Use lowercase for all keywords.
 
     TEXT: {text}
 
@@ -80,16 +80,19 @@ def save_summaries(summaries):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     output.write(f"Research Summaries ({timestamp})\n".encode('utf-8'))
-    output.write("="*50 + b"\n\n")
+    line = f"\n{'='*80}\n\n"
+    output.write(line.encode('utf-8'))
     
     for summary in summaries:
         output.write(f"Title: {summary['title']}\n".encode('utf-8'))
         output.write(f"Authors: {summary['authors']}\n".encode('utf-8'))
         output.write(f"Year: {summary['year']}\n".encode('utf-8'))
         output.write(f"PDF URL: {summary['pdf_url']}\n".encode('utf-8'))
+        keywords_str = ", ".join(sorted(summary['keywords']))
+        output.write(f"Keywords: {keywords_str}\n".encode('utf-8'))
         output.write("\nSummary:\n".encode('utf-8'))
         output.write(f"{summary['content']}\n".encode('utf-8'))
-        output.write("\n" + "="*50 + "\n\n".encode('utf-8'))
+        output.write(line.encode('utf-8'))
     
     output.seek(0)
     return output
