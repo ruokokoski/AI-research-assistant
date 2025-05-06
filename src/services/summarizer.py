@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 import fitz
 from io import BytesIO
@@ -32,6 +33,11 @@ def summarize_pdf_from_url(pdf_url):
     
     text = ""
     metadata = doc.metadata
+    print("\n--- PDF Metadata ---")
+    for key, value in metadata.items():
+        print(f"{key}: {value}")
+    print("---------------------\n")
+
     for page in doc:
         text += page.get_text()
         if not metadata:
@@ -49,7 +55,12 @@ def summarize_pdf_from_url(pdf_url):
     split_docs = text_splitter.split_documents(docs)
 
     summary_chain = load_summarize_chain(llm, chain_type="map_reduce")
+
+    start_time = time.time()
     summary = summary_chain.invoke(split_docs)['output_text']
+    elapsed_time = time.time() - start_time
+    print(f"\n✅ Summarization completed in {elapsed_time:.1f} seconds.\n")
+
     doc_keywords = extract_keywords(summary)
 
     return {
