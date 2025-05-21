@@ -4,6 +4,7 @@ warnings.filterwarnings("ignore", message="Unexpected type for token usage")
 import os
 import time
 import tiktoken
+import re
 from datetime import datetime
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -37,7 +38,14 @@ def process_folder(folder_path):
                 "source": pdf_file
             })
         except Exception as e:
-            print(f"Failed to process {pdf_file}: {str(e)}")
+            try:
+                match = re.search(r"message['\"]:\s*['\"](.+?)['\"]", str(e))
+                if match:
+                    print(f"Failed to process {pdf_file}. {match.group(1)}")
+                else:
+                    raise ValueError
+            except Exception:
+                print(f"Failed to process {pdf_file}: {str(e)}")
     
     return summaries
 
