@@ -35,6 +35,7 @@ Home
             <form method="POST" action="/process-marked" id="process_form">
                 <div class="mb-2">
                     <button type="submit" name="action" value="summarize" class="btn btn-info mr-2">Summarize Articles</button>
+                    <button type="submit" name="action" value="download" class="btn btn-warning mr-2">Download Articles</button>
                     <button type="submit" name="action" value="blog" class="btn btn-success">Create Blog Post</button>
                 </div>
                 <h5 class="mb-2">Found {{ results|length }} articles:</h5>
@@ -116,7 +117,7 @@ Home
                 </div>
             {% else %}
                 <div class="text-muted" style="height: 100%; display: flex;  justify-content: center;">
-                Select articles and click either button to view results here
+                Select articles and click 'Summarize Articles'-button to view results here
                 </div>
             {% endif %}
         </div>

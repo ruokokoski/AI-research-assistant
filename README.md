@@ -41,6 +41,11 @@ Then install all project dependencies:
 poetry install
 ```
 
+Download and install browser binaries:
+```bash
+poetry run playwright install
+```
+
 Activate the virtual environment:
 ```bash
 poetry shell
@@ -49,6 +54,11 @@ poetry shell
 Set your OpenRouter API key in a `.env` file:
 ```bash
 OPENROUTER_API_KEY=your_api_key_here
+```
+
+Set your own SECRET_KEY in a `.env` file:
+```bash
+SECRET_KEY=your_key_here
 ```
 
 ## Usage: `pdf_summarizer.py`

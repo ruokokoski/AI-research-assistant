@@ -6,6 +6,12 @@ from services.summarizer import summarize_pdf_from_url, save_summaries
 from dotenv import load_dotenv
 from datetime import datetime
 from uuid import uuid4
+import tempfile
+import requests
+import zipfile
+import os
+from io import BytesIO
+
 
 SUMMARY_STORE = {}
 
@@ -80,7 +86,42 @@ def process_marked():
             return render_template("index.html",
                                    results=search_results,
                                    summarized_content=summaries)
-            
+        
+        elif action == "download":
+            try:
+                with tempfile.TemporaryDirectory() as tmpdirname:
+                    zip_buffer = BytesIO()
+                    with zipfile.ZipFile(zip_buffer, 'w') as zipf:
+                        for url in valid_urls:
+                            article = article_map.get(url)
+                            if not article:
+                                continue
+
+                            response = requests.get(url)
+                            if response.status_code == 200:
+                                first_author = article['authors'][0].split()[-1]
+                                year = article.get('year', 'unknown')
+                                title = article['title']
+                                safe_title = "".join(c if c.isalnum() or c in (' ', '_') else '_' for c in title).replace(' ', '_')
+                                filename = f"{first_author}_{year}_{safe_title}.pdf"
+                                filepath = os.path.join(tmpdirname, filename)
+                                with open(filepath, 'wb') as f:
+                                    f.write(response.content)
+                                zipf.write(filepath, arcname=filename)
+
+                    zip_buffer.seek(0)
+                    timestamp = datetime.now().strftime("%Y%m%d")
+
+                    return send_file(
+                        zip_buffer,
+                        mimetype='application/zip',
+                        as_attachment=True,
+                        download_name=f'articles_{timestamp}.zip'
+                    )
+            except Exception as e:
+                flash(f"Failed to download PDFs: {str(e)}", "danger")
+                return redirect("/")
+
         elif action == "blog":
             # Implement blog post generation logic here
             pass
